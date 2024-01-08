@@ -25,11 +25,13 @@ type Props = {
     roomData: Hotelroom
 }
 
-type FormValues = {
+
+type FieldValues = {
     roomNumber: number
-    roomSize: number
-    minibar: boolean
+    roomSize: string
+    miniBar: boolean
 }
+
 
 const EditRoom = ({ roomData }: Props) => {
 
@@ -39,17 +41,17 @@ const EditRoom = ({ roomData }: Props) => {
     const [updateHotelRoomByRoomNumber, { data, error, isLoading }] = useUpdateHotelRoomByRoomNumberMutation()
 
     const schema = yup.object().shape({
-        roomNumber: yup.number().required(),
-        roomSize: yup.string().required(),
-        minibar: yup.boolean().required()
+        roomNumber: yup.number().required("Zimmernummer ist erforderlich"),
+        roomSize: yup.string().required("Zimmergröße ist erforderlich"),
+        miniBar: yup.boolean().required("Minibar ist erforderlich")
     })
 
-    const { register, handleSubmit, control, getValues, setValue, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, getValues, setValue, formState: { errors } } = useForm<FieldValues>({
         resolver: yupResolver(schema),
         values: {
             roomNumber: roomData.roomNumber,
             roomSize: roomData.roomSize.id.toString(),
-            minibar: roomData.miniBar
+            miniBar: roomData.miniBar
         }
     })
 
@@ -59,13 +61,14 @@ const EditRoom = ({ roomData }: Props) => {
             initialRoomNumber: roomData.roomNumber,
             roomNumber: data.roomNumber,
             roomSize: parseInt(data.roomSize),
-            miniBar: data.minibar
-        }).then((res) => {
+            miniBar: data.miniBar
+        }).unwrap().then((res) => {
             setLoading(false)
             toast.success("Zimmer erfolgreich bearbeitet")
             setOpen(false)
         }).catch((err) => {
             setLoading(false)
+            toast.error("Fehler beim bearbeiten des Zimmers")
             console.log(err)
         })
     }
@@ -116,7 +119,7 @@ const EditRoom = ({ roomData }: Props) => {
                             Minibar
                         </Label>
                         <Controller
-                            name="minibar"
+                            name="miniBar"
                             control={control}
                             render={({ field }) => (
                                 <Switch checked={field.value} onCheckedChange={field.onChange} />

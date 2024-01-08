@@ -22,16 +22,15 @@ import { useAddHotelRoomMutation } from '@/redux/slices/hotelRoomSlice'
 import toast from 'react-hot-toast'
 
 type Props = {
-    roomData: Hotelroom
 }
 
 type FieldValues = {
-    roomNumber: number | undefined
-    roomSize: number | undefined
+    roomNumber: number
+    roomSize: string
     miniBar: boolean
 }
 
-const AddRoom = ({ roomData }: Props) => {
+const AddRoom = ({ }: Props) => {
 
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
@@ -46,7 +45,7 @@ const AddRoom = ({ roomData }: Props) => {
 
     const { register, handleSubmit, control, getValues, setValue, reset, formState: { errors } } = useForm<FieldValues>({
         resolver: yupResolver(schema),
-        values: {
+        defaultValues: {
             roomNumber: undefined,
             roomSize: undefined,
             miniBar: false,

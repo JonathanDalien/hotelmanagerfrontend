@@ -1,7 +1,14 @@
 export type Hotelroom = {
     id: string
     roomNumber: number
-    roomSize:RoomSize
+    roomSize: RoomSize
+    miniBar: boolean
+}
+
+export type HotelroomTable = {
+    id: string
+    roomNumber: number
+    roomSize: string
     miniBar: boolean
 }
 

@@ -20,14 +20,16 @@ import { useSelector } from "react-redux"
 import { RootState } from '@/redux/store'
 import { UseFormSetValue } from "react-hook-form"
 
+type FieldValues = {
+    roomNumber: number
+    roomSize: string
+    miniBar: boolean
+}
+
 interface props {
-    value: string | null
+    value: string | undefined
     onChange: (...event: any[]) => void
-    setValue: UseFormSetValue<{
-        roomNumber: number;
-        roomSize: string;
-        minibar: boolean;
-    }>
+    setValue: UseFormSetValue<FieldValues>
 
 
 }
@@ -35,7 +37,6 @@ interface props {
 export function RoomSizeCB({ value, setValue, onChange }: props) {
     const [open, setOpen] = React.useState(false)
 
-    console.log(value)
 
     const { } = useGetRoomSizesQuery()
 

@@ -9,7 +9,7 @@ type roomSizeOptions = {
 
 type RoomSizeState = {
     roomSizes: RoomSize[]
-        roomSizeOptions: roomSizeOptions[]
+    roomSizeOptions: roomSizeOptions[]
 }
 
 const initialState: RoomSizeState = {
@@ -23,7 +23,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: '/roomsizes',
                 method: 'GET'
-            })
+            }),
         }),
     })
 })
@@ -37,14 +37,14 @@ export const roomSizeSlice = createSlice({
         builder.addMatcher(extendedApiSlice.endpoints.getRoomSizes.matchFulfilled, (state, action) => {
             state.roomSizes = action.payload
         }),
-        builder.addMatcher(extendedApiSlice.endpoints.getRoomSizes.matchFulfilled, (state, action) => {
-            state.roomSizeOptions = action.payload.map((roomSize) => {
-                return {
-                    value: roomSize.id,
-                    label: roomSize.size
-                }
+            builder.addMatcher(extendedApiSlice.endpoints.getRoomSizes.matchFulfilled, (state, action) => {
+                state.roomSizeOptions = action.payload.map((roomSize) => {
+                    return {
+                        value: roomSize.id,
+                        label: roomSize.size
+                    }
+                })
             })
-        })
     }
 })
 

@@ -1,5 +1,5 @@
 
-import { Hotelroom } from "@/types/types"
+import { Hotelroom, HotelroomTable } from "@/types/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Button } from "../ui/button"
@@ -38,6 +38,9 @@ export const columns: ColumnDef<Hotelroom>[] = [
         },
         cell: ({ row }) => {
             return row.getValue("roomSize").size
+        },
+        sortingFn: (rowA, rowB) => {
+            return rowA.getValue("roomSize").size.localeCompare(rowB.getValue("roomSize").size)
         }
     },
     {
@@ -51,7 +54,6 @@ export const columns: ColumnDef<Hotelroom>[] = [
         accessorKey: "function",
         header: () => (<div className="text-end">Funktionen</div>),
         cell: ({ row }) => {
-            console.log(row.original)
             return (
                 <div className='flex gap-2 justify-end'>
                     <Link href={`hotelrooms/${row.original.id}`} className=' bg-gray-100 p-2 rounded-md hover:bg-gray-200  transition-all'>Details</Link>
