@@ -5,12 +5,11 @@ import RootLayout from '@/layout'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-const inter = Inter({ subsets: ['latin'] })
 
-
+//Home page
 export default function Home() {
   return (
-    <div className={`${inter.className} h-[calc(100vh-115px)] flex flex-col items-center gap-10 `}>
+    <div className={` h-[calc(100vh-115px)] flex flex-col items-center gap-10 `}>
       <div className='flex items-center justify-center mt-10 '>
         <Image src={logo} alt="Vercel Logo" className='w-96' />
       </div>
@@ -24,6 +23,7 @@ export default function Home() {
   )
 }
 
+//Layout for the home page
 Home.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <div className=''>

@@ -15,34 +15,27 @@ import { useDispatch, useSelector } from 'react-redux'
 
 type Props = {}
 
-
+//page for the hotelrooms
 const Hotelrooms = (props: Props) => {
 
-
+    //withMinibar and roomSizeIds state from redux store. is used for the query
     const withMinibar = useSelector((state: RootState) => state.hotelRoom.filters.withMinibar)
     const roomSizeIds = useSelector((state: RootState) => state.hotelRoom.filters.roomSizeIds)
-    const dispatch = useDispatch();
 
-
-    const { data, error, isLoading, refetch } = useGetHotelRoomsQuery({
+    //query for hotelrooms with the filters from the redux store
+    const { data } = useGetHotelRoomsQuery({
         withMinibar: withMinibar,
         roomSizeIds: roomSizeIds
     })
 
-
-    const handleCheckboxChange = (event: CheckedState) => {
-        dispatch(setWhithMinibarFilter(event))
-    };
-
-
-
     return (
         <div className='p-10 '>
             <div className='mb-2'>
-                {/* Knopf zum hinzufügen eines Zimmers */}
+                {/* Button to open add room dialog */}
                 <AddRoom />
             </div>
             <div className='flex items-center gap-2 mb-2'>
+                {/* Select dropdown to filter rooms with minibar */}
                 <RoomSizeSelectComponent />
                 <WithMiniBarSelectComponent />
             </div>
@@ -53,6 +46,7 @@ const Hotelrooms = (props: Props) => {
 
 export default Hotelrooms
 
+//Layout for the page
 Hotelrooms.getLayout = function getLayout(page: React.ReactElement) {
     return (
         <div className=''>

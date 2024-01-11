@@ -35,11 +35,14 @@ interface props {
 }
 
 export function RoomSizeCB({ value, setValue, onChange }: props) {
+
+    // open state for the popover
     const [open, setOpen] = React.useState(false)
 
-
+    // query for the room sizes
     const { } = useGetRoomSizesQuery()
 
+    // room sizes from redux store 
     const roomSizes = useSelector((state: RootState) => state.roomSize.roomSizeOptions)
 
 

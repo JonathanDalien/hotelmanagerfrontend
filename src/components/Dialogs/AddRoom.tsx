@@ -20,6 +20,7 @@ import { Hotelroom, } from '@/types/types'
 import { Switch } from '../ui/switch'
 import { useAddHotelRoomMutation } from '@/redux/slices/hotelRoomSlice'
 import toast from 'react-hot-toast'
+import { hotelRoomSchema } from '../schemas/HotelRoomSchema'
 
 type Props = {
 }
@@ -30,21 +31,19 @@ type FieldValues = {
     miniBar: boolean
 }
 
+// dialog to add a hotelroom
 const AddRoom = ({ }: Props) => {
 
-    const [loading, setLoading] = useState(false)
+    // open state for the dialog
     const [open, setOpen] = useState(false)
 
+    // mutation to add a hotelroom
     const [addHotelRoomMutation, { data, error, isLoading }] = useAddHotelRoomMutation()
-    const schema = yup.object().shape({
-        roomNumber: yup.number().required("Zimmernummer ist erforderlich"),
-        roomSize: yup.string().required("Zimmergröße ist erforderlich"),
-        miniBar: yup.boolean().required("Minibar ist erforderlich")
-    })
 
 
+    // react hook form
     const { register, handleSubmit, control, getValues, setValue, reset, formState: { errors } } = useForm<FieldValues>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(hotelRoomSchema),
         defaultValues: {
             roomNumber: undefined,
             roomSize: undefined,
@@ -53,6 +52,7 @@ const AddRoom = ({ }: Props) => {
         }
     })
 
+    // handle submit function
     const onSubmit = async (data: any) => {
         try {
             await addHotelRoomMutation(data).unwrap()

@@ -20,6 +20,7 @@ import { Hotelroom, } from '@/types/types'
 import { Switch } from '../ui/switch'
 import { useUpdateHotelRoomByRoomNumberMutation } from '@/redux/slices/hotelRoomSlice'
 import toast from 'react-hot-toast'
+import { hotelRoomSchema } from '../schemas/HotelRoomSchema'
 
 type Props = {
     roomData: Hotelroom
@@ -32,22 +33,20 @@ type FieldValues = {
     miniBar: boolean
 }
 
-
+// dialog to edit a hotelroom
 const EditRoom = ({ roomData }: Props) => {
 
-    const [loading, setLoading] = useState(false)
+    // open state for the dialog
     const [open, setOpen] = useState(false)
 
+    // mutation to update a hotelroom
     const [updateHotelRoomByRoomNumber, { data, error, isLoading }] = useUpdateHotelRoomByRoomNumberMutation()
 
-    const schema = yup.object().shape({
-        roomNumber: yup.number().required("Zimmernummer ist erforderlich"),
-        roomSize: yup.string().required("Zimmergröße ist erforderlich"),
-        miniBar: yup.boolean().required("Minibar ist erforderlich")
-    })
 
+
+    // react hook form
     const { register, handleSubmit, control, getValues, setValue, formState: { errors } } = useForm<FieldValues>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(hotelRoomSchema),
         values: {
             roomNumber: roomData.roomNumber,
             roomSize: roomData.roomSize.id.toString(),
@@ -55,19 +54,17 @@ const EditRoom = ({ roomData }: Props) => {
         }
     })
 
+    // handle submit function
     const onSubmit = async (data: any) => {
-        setLoading(true)
         updateHotelRoomByRoomNumber({
             initialRoomNumber: roomData.roomNumber,
             roomNumber: data.roomNumber,
             roomSize: parseInt(data.roomSize),
             miniBar: data.miniBar
         }).unwrap().then((res) => {
-            setLoading(false)
             toast.success("Zimmer erfolgreich bearbeitet")
             setOpen(false)
         }).catch((err) => {
-            setLoading(false)
             toast.error("Fehler beim bearbeiten des Zimmers")
             console.log(err)
         })
@@ -87,8 +84,8 @@ const EditRoom = ({ roomData }: Props) => {
                         Bearbeiten Sie hier die Daten des Zimmers. Klicken Sie auf "Speichern", um die Änderungen zu übernehmen.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
+                <div className="grid  py-4">
+                    <div className="grid grid-cols-4  items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                             Zimmernummer
                         </Label>
@@ -96,11 +93,18 @@ const EditRoom = ({ roomData }: Props) => {
                             name="roomNumber"
                             control={control}
                             render={({ field }) => (
-                                <Input {...field} type='number' id="name" className="col-span-3" />
+                                <Input {...field} type='number' id="name" className="col-span-3" placeholder='Zimmernummer' />
                             )}
                         />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="grid grid-cols-4 mb-4 items-center gap-4">
+
+                        <div className='col-span-3 col-start-2'>
+                            <p className='text-xs text-red-500'>{errors.roomNumber?.message}</p>
+
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-4  items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                             Zimmergröße
                         </Label>
@@ -112,6 +116,13 @@ const EditRoom = ({ roomData }: Props) => {
                                     <RoomSizeCB value={field.value} setValue={setValue} onChange={field.onChange} />
                                 )}
                             />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-4 mb-4 items-center gap-4">
+
+                        <div className='col-span-3 col-start-2'>
+                            <p className='text-xs text-red-500'>{errors.roomSize?.message}</p>
+
                         </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">

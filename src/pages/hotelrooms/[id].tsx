@@ -9,15 +9,17 @@ import DeleteRoom from '@/components/Alert Dialog/DeleteRoom';
 
 type Props = {}
 
+//page for a single hotelroom
 const SingleHotelRoom = (props: Props) => {
 
     const router = useRouter()
     const id = router.query.id as string
 
-
-
+    //query for the hotelroom by id
     const { data, error, isLoading } = useGetHotelRoomByIdQuery(parseInt(id))
-    if (isLoading) return <p>Loading...</p>
+
+    //if the query is loading show loading
+    if (isLoading) return <p>Lädt...</p>
 
 
     return (
@@ -51,10 +53,8 @@ const SingleHotelRoom = (props: Props) => {
 
 export default SingleHotelRoom
 
+//Layout for the page
 SingleHotelRoom.getLayout = function getLayout(page: React.ReactElement) {
-
-
-
     return (
         <div className=''>
             <RootLayout>

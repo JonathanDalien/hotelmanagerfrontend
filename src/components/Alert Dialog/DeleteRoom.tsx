@@ -18,10 +18,13 @@ type Props = {
     onSucces?: () => void
 }
 
+// alert dialog to delete a hotelroom
 const DeleteRoom = ({ id, onSucces }: Props) => {
 
+    //mutation to delete a hotelroom by id
     const [deleteHotelRoomById, { data, error, isLoading }] = useDeleteHotelRoomByIdMutation()
 
+    //handle delete function
     const handleDelete = async () => {
         try {
             await deleteHotelRoomById(id).unwrap()
