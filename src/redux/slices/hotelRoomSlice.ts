@@ -5,6 +5,7 @@ import { apiSlice } from "../api/apiSlice";
 type HotelRoomFilters = {
     withMinibar?: boolean[]
     roomSizeIds?: number[]
+    roomNumber: number | undefined
 }
 
 //Typ definieren für den State
@@ -16,7 +17,8 @@ type HotelRoomState = {
 const initialState: HotelRoomState = {
     filters: {
         withMinibar: [],
-        roomSizeIds: []
+        roomSizeIds: [],
+        roomNumber: undefined
     }
 }
 
@@ -24,11 +26,11 @@ const initialState: HotelRoomState = {
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         //Api-Call für Hotelrooms
-        getHotelRooms: builder.query<Hotelroom[], { withMinibar?: boolean[], roomSizeIds?: number[] }>({
-            query: ({ withMinibar, roomSizeIds }) => {
+        getHotelRooms: builder.query<Hotelroom[], { withMinibar?: boolean[], roomSizeIds?: number[], roomNumber: number | undefined }>({
+            query: ({ withMinibar, roomSizeIds, roomNumber }) => {
                 return {
                     url: `/hotelrooms`,
-                    params: { withMinibar, roomSizeIds },
+                    params: { withMinibar, roomSizeIds, roomNumber },
                     method: 'GET'
                 };
             },
@@ -94,18 +96,24 @@ export const hotelRoomSlice = createSlice({
     name: 'hotelRoom',
     initialState,
     reducers: {
+        //reducer to set the filter for the hotelrooms
         setWhithMinibarFilter: (state, action) => {
             state.filters.withMinibar = action.payload
         },
+        //reducer to set the filter for the hotelrooms
         setRoomSizeFilter: (state, action) => {
             state.filters.roomSizeIds = action.payload
+        },
+        //reducer to set the filter for the hotelrooms
+        setRoomNumberFilter: (state, action) => {
+            state.filters.roomNumber = action.payload
         }
     },
 })
 
 export default hotelRoomSlice.reducer
 
-export const { setWhithMinibarFilter, setRoomSizeFilter } = hotelRoomSlice.actions;
+export const { setWhithMinibarFilter, setRoomSizeFilter, setRoomNumberFilter } = hotelRoomSlice.actions;
 
 export const {
     useGetHotelRoomsQuery,
