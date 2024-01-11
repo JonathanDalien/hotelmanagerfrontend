@@ -35,11 +35,10 @@ function getStyles(name: string, personName: string[], theme: Theme) {
 export default function RoomSizeSelectComponent() {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const [selectedOptions, setSelectedOptions] = React.useState<number[]>([]);
 
     const roomSizeIds = useSelector((state: RootState) => state.hotelRoom.filters.roomSizeIds)
 
-    const handleChange = (event: SelectChangeEvent<typeof selectedOptions>) => {
+    const handleChange = (event: SelectChangeEvent<typeof roomSizeIds>) => {
         const {
             target: { value },
         } = event;
