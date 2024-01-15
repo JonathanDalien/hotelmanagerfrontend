@@ -23,12 +23,12 @@ const MenuProps = {
 
 
 
-function getStyles(name: string, personName: string[], theme: Theme) {
+function getStyles(name: number, roomSizeIds: (number[] | undefined), theme: Theme) {
     return {
         fontWeight:
-            personName.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
+            roomSizeIds?.indexOf(name) === -1
+                ? "normal"
+                : "bold",
     };
 }
 
@@ -42,10 +42,6 @@ export default function RoomSizeSelectComponent() {
         const {
             target: { value },
         } = event;
-        // setSelectedOptions(
-        //     // On autofill we get a stringified value.
-        //     typeof value === 'string' ? value.split(',') : value,
-        // );
 
         dispatch(setRoomSizeFilter(value))
 
@@ -55,6 +51,8 @@ export default function RoomSizeSelectComponent() {
 
 
     const roomSizes = useSelector((state: RootState) => state.roomSize.roomSizeOptions)
+
+    console.log(roomSizeIds)
 
 
     return (
@@ -74,7 +72,7 @@ export default function RoomSizeSelectComponent() {
                         <MenuItem
                             key={name.value}
                             value={name.value}
-                            style={getStyles(name.label, roomSizeIds, theme)}
+                            style={getStyles(name.value, roomSizeIds, theme)}
                         >
                             {name.label}
                         </MenuItem>

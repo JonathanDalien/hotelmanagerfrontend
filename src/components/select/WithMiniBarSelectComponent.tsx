@@ -23,12 +23,12 @@ const MenuProps = {
 
 
 
-function getStyles(name: string, options, theme: Theme) {
+function getStyles(name: boolean, options: (boolean[] | undefined), theme: Theme) {
     return {
         fontWeight:
-            options.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
+            options?.indexOf(name) === -1
+                ? "normal"
+                : "bold",
     };
 }
 
@@ -73,7 +73,7 @@ export default function WithMiniBarSelectComponent() {
                         <MenuItem
                             key={name.id}
                             value={name.value}
-                            style={getStyles(name.label, withMinibar, theme)}
+                            style={getStyles(name.value, withMinibar, theme)}
                         >
                             {name.label}
                         </MenuItem>
