@@ -47,12 +47,10 @@ export default function RoomSizeSelectComponent() {
 
     };
 
-    const { } = useGetRoomSizesQuery()
+    const { data, } = useGetRoomSizesQuery()
 
 
     const roomSizes = useSelector((state: RootState) => state.roomSize.roomSizeOptions)
-
-    console.log(roomSizeIds)
 
 
     return (

@@ -25,7 +25,6 @@ const initialState: HotelRoomState = {
 //endpoints definieren für die API
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        //Api-Call für Hotelrooms
         getHotelRooms: builder.query<Hotelroom[], { withMinibar?: boolean[], roomSizeIds?: number[], roomNumber: number | undefined }>({
             query: ({ withMinibar, roomSizeIds, roomNumber }) => {
                 return {
